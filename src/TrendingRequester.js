@@ -7,7 +7,7 @@ const pageAdditions = {
 }
 
 class TrendingRequester {
-  static async requestTrendingPage(geoLocation = null, page) {
+  static async requestTrendingPage(geoLocation = null, page,agent=null) {
     try {
       const params = {}
       if (geoLocation !== null) {
@@ -21,7 +21,11 @@ class TrendingRequester {
           console.error('Fallback to default trending page because no valid page name was provided:', page)
         }
       }
-      return await axios.get(trendingPageBase, { params })
+		let requestParams = { params }
+		if(agent!=null){
+			requestParams.httpsAgent=agent
+		}
+		return await axios.get(trendingPageBase, requestParams)
     } catch (e) {
       return {
         error: true,
